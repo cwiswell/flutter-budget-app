@@ -9,6 +9,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final TextEditingController _textController = new TextEditingController();
+  int _income = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +22,35 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text('Income: $_income'),
+            new TextField(
+              controller: _textController,
+              decoration: new InputDecoration(labelText: "Enter your income"),
+              keyboardType: TextInputType.number,
+              onSubmitted: (input)  {
+                if(isNumber(input)) {
+                  setState(() {
+                    _income = num.tryParse(input);
+                    _textController.clear();
+                  });
+                }else{
+                  setState(() {
+                    _textController.clear();
+                  });
+                }
+              },
+            ),
           ],
         ),
       ),
-
     );
+  }
+
+  bool isNumber(String value) {
+    if(value == null) {
+      return true;
+    }
+    final n = num.tryParse(value);
+    return n!= null;
   }
 }
